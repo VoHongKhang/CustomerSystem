@@ -1,0 +1,181 @@
+<%@page import="fjs.cs.dto.T002Dto"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Search - Training</title>
+<style>
+.listUser_0 {
+	background-color: #CCFFFF;
+}
+
+.listUser_1 {
+	background-color: #FFFFFF;
+}
+
+table {
+	border-collapse: collapse;
+}
+</style>
+</head>
+<body style="background: #ccffff;">
+	<div>
+		<h1 style="color: red; margin: 0px;">Tranining</h1>
+		<hr>
+		<p>Login > Search Custommer</p>
+	</div>
+	<div>
+		<label id="lblUserName">Welcome ${user.getUSERNAME()} <a
+			href="login" id="llblLogout" style="margin-left: 85%;">Log Out</a></label>
+
+	</div>
+
+	<p style="padding: 1%; background-color: #3366ff;"></p>
+	<br>
+
+	<div id="block-search"
+		style="width: 96%; text-align: left; background-color: #F3F781; padding: 2%;">
+		<form
+			style="display: flex; align-items: center; justify-content: space-between;"
+			action="search" method="post" id="searchForm" name="Form">
+			<div>
+				<label style="margin-right: 40px; font-size: 18px;">
+					Customer Name </label> <input type="text" name="customer_Name"
+					id="txtCustomerName" style="padding: 6px 0px;">
+			</div>
+			<div
+				style="display: flex; width: 200px; justify-content: space-between; align-items: center;">
+				<label style="font-size: 18px;"> Sex </label> <select
+					style="width: 140px; margin-right: 4%; padding: 6px 0px;"
+					name="sex" id="cboSex" style="margin-right: 4%;">
+					<option value="false"></option>
+					<option value="0">Female</option>
+					<option value="1">Male</option>
+				</select>
+			</div>
+			<div style="display: flex; align-items: center;">
+				<div>
+					<label style="font-size: 18px;"> Birthday </label>
+				</div>
+				<div
+					style="display: flex; width: 320px; align-items: center; justify-content: center;">
+					<input style="padding: 6px;" type="text" size=10%;
+						name="birthDayStart" id="txtBirthdayForm"> <label
+						style="padding: 0px 8px;">~</label> <input style="padding: 6px;"
+						type="text" size="10%;" name="birthDayEnd" id="txtBirthdayTo"
+						style="margin-right: 7%;">
+				</div>
+
+			</div>
+			<div style="width: 200px; display: flex; justify-content: center;">
+				<input type="submit" value="Search" onclick="checkBirthday();"
+					id="btnSearch"
+					style="font-size: 16px; padding: 6px 14px; cursor: pointer;">
+			</div>
+		</form>
+	</div>
+
+	<div id="block-page" style="margin-top: 1%;">
+		<button type="button" id="btnFirst"> << </button>
+		<input style="padding: 6px; cursor: pointer;" type="button"
+			id="btnFirst" value="<<"><input
+			style="padding: 6px 11px; cursor: pointer;" type="button"
+			id="btnPrevious" value="<"> <label style="margin-right: 80%;">
+			&nbsp;Previous</label> <label>Next &nbsp;</label> <input
+			style="padding: 6px 11px; cursor: pointer;" type="button"
+			id="btnNext" value=">"><input
+			style="padding: 6px; cursor: pointer;" type="button" id="btnLast"
+			value=">>">
+	</div>
+
+	<div style="width: 100%; background-color: #F3F781;">
+		<table align="left" width="100%" cellpadding="10%;"
+			style="margin-top: 1%; margin-bottom: 2%;">
+			<tbody style="border: 2px solid; border-color: #00CC00;">
+				<tr bgcolor="red;" style="text-align: left;">
+					<th><input type="checkbox" onchange="checkAll(this)"
+						id="chkAll"></th>
+					<th id="llblCustomerID">Customer ID</th>
+					<th id="lblCustomerName">Customer Name</th>
+					<th id="lblSex">Sex</th>
+					<th id="lblBirthday">Birthday</th>
+					<th id="lblAddress">Address</th>
+				</tr>
+				<%
+					int count = 0;
+					List<T002Dto> list = (List<T002Dto>) request.getAttribute("list");
+					for (T002Dto cus : list) {
+						count++;
+				%>
+
+				<tr class="listUser_<%=count % 2%>" style="text-align: left;">
+					<td id="chkDetail"><input type="checkbox"
+						value="<%=cus.getCUSTOMER_ID()%>"></td>
+					<td><a href="edit?id=<%=cus.getCUSTOMER_ID()%>"><%=cus.getCUSTOMER_ID()%></a></td>
+					<td><%=cus.getCUSTOMER_NAME()%></td>
+					<td><%=Integer.parseInt(cus.getSEX()) == 0 ? "Male" : "Famale"%></td>
+					<td><%=cus.getBIRTHDAY()%></td>
+					<td><%=cus.getADDRESS()%></td>
+				</tr>
+				<%
+					}
+				%>
+			</tbody>
+		</table>
+
+	</div>
+	<div id="block_button" align="left" style="margin-bottom: 2%;">
+
+		<input type="button" value="Add New" class="button" onclick=""
+			id="btnAddnew"
+			style="margin-right: 3%; padding: 6px 50px; font-size: 16px; cursor: pointer;">
+		<input type="submit" name="actionMethod" id="btnDelete" value="Delete"
+			style="font-size: 16px; padding: 6px 12px; cursor: pointer;">
+	</div>
+	<div id="footer" align="left">
+		<hr>
+		<label> Copyright (c) 2000-2008 FUJINET, All Rights Reserved.</label>
+	</div>
+
+
+	<!-- Xu ly dong chan le trong table -->
+
+
+	<!-- Xu ly nut CheckBox  -->
+	<script>
+		function checkAll(ele) {
+			var checkboxes = document.querySelectorAll('input[type=checkbox]');
+			if (ele.checked) {
+				for (var i = 0; i < checkboxes.length; i++) {
+					checkboxes[i].checked = true;
+				}
+			} else {
+				for (var i = 0; i < checkboxes.length; i++) {
+					checkboxes[i].checked = false;
+				}
+			}
+		}
+	</script>
+
+	<!-- Xu ly cac button phan trang  -->
+	<script>
+		var checkboxes = document.querySelectorAll('input[type=checkbox]');
+		var btnFirst = document.querySelector('#btnFirst');
+		var btnPre = document.querySelector('#btnPrevious');
+		var btnNext = document.querySelector('#btnNext');
+		var btnLast = document.querySelector('#btnLast');
+		if (checkboxes.length <= 16) {
+			btnFirst.disabled = true;
+			btnPre.disabled = true;
+			btnNext.disabled = true;
+			btnLast.disabled = true;
+		} else {
+			btnFirst.disabled = true;
+			btnPre.disabled = true;
+		}
+	</script>
+</body>
+</html>
