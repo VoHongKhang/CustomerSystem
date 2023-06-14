@@ -78,17 +78,19 @@ table {
 		</form>
 	</div>
 
+	<%-- Hiển thị nút điều hướng --%>
+	<%-- Kiểm tra trang hiện tại để ẩn/hiện các nút điều hướng phù hợp --%>
 	<div id="block-page" style="margin-top: 1%;">
-		<button type="button" id="btnFirst"> << </button>
-		<input style="padding: 6px; cursor: pointer;" type="button"
-			id="btnFirst" value="<<"><input
-			style="padding: 6px 11px; cursor: pointer;" type="button"
-			id="btnPrevious" value="<"> <label style="margin-right: 80%;">
-			&nbsp;Previous</label> <label>Next &nbsp;</label> <input
-			style="padding: 6px 11px; cursor: pointer;" type="button"
-			id="btnNext" value=">"><input
-			style="padding: 6px; cursor: pointer;" type="button" id="btnLast"
-			value=">>">
+		<a href="?currentPage=1"><button type="button" id="btnFirst">
+				<<</button></a> <a href="?currentPage=${currentPage - 1}"><button
+				type="button" id="btnPrevious"><</button></a> <label
+			style="margin-right: 80%;"> &nbsp;Previous</label> <label>Next
+			&nbsp;</label> <a href="?currentPage=${currentPage + 1}"><button
+				type="button" id="btnNext">></button></a> <a
+			href="?currentPage=${totalPages}"><button type="button"
+				id="btnLast">>></button></a>
+
+
 	</div>
 
 	<div style="width: 100%; background-color: #F3F781;">
@@ -106,11 +108,12 @@ table {
 				</tr>
 				<%
 					int count = 0;
-					List<T002Dto> list = (List<T002Dto>) request.getAttribute("list");
+					List<T002Dto> list = (List<T002Dto>) request.getAttribute("dataList");
 					for (T002Dto cus : list) {
 						count++;
 				%>
 
+				<!-- Xu ly dong chan le trong table -->
 				<tr class="listUser_<%=count % 2%>" style="text-align: left;">
 					<td id="chkDetail"><input type="checkbox"
 						value="<%=cus.getCUSTOMER_ID()%>"></td>
@@ -140,10 +143,6 @@ table {
 		<label> Copyright (c) 2000-2008 FUJINET, All Rights Reserved.</label>
 	</div>
 
-
-	<!-- Xu ly dong chan le trong table -->
-
-
 	<!-- Xu ly nut CheckBox  -->
 	<script>
 		function checkAll(ele) {
@@ -162,19 +161,25 @@ table {
 
 	<!-- Xu ly cac button phan trang  -->
 	<script>
-		var checkboxes = document.querySelectorAll('input[type=checkbox]');
 		var btnFirst = document.querySelector('#btnFirst');
 		var btnPre = document.querySelector('#btnPrevious');
 		var btnNext = document.querySelector('#btnNext');
 		var btnLast = document.querySelector('#btnLast');
-		if (checkboxes.length <= 16) {
+		if(${currentPage > 1}){
+			btnFirst.disabled = false;
+			btnPre.disabled = false;
+		}
+		else{
 			btnFirst.disabled = true;
 			btnPre.disabled = true;
+		}
+		if(${currentPage < totalPages}){
+			btnNext.disabled = false;
+			btnLast.disabled = false;
+		}
+		else{
 			btnNext.disabled = true;
 			btnLast.disabled = true;
-		} else {
-			btnFirst.disabled = true;
-			btnPre.disabled = true;
 		}
 	</script>
 </body>
